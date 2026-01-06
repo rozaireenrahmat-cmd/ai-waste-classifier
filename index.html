@@ -1,28 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>AI Waste Classifier</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>AI Waste Classifier</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest"></script>
+<!-- TensorFlow.js -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
 
-    <link rel="stylesheet" href="style.css">
+<!-- Teachable Machine -->
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest"></script>
+
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-
 <div class="container">
-    <h1>AI Waste Classification</h1>
-    <p>Upload an image to classify waste</p>
-    <input type="file" accept="image/*" onchange="predictImage(event)">
+    <h1>AI Waste Classifier</h1>
+    <p>Upload an image or use webcam to classify waste</p>
 
-<br><br>
+    <!-- Upload Image -->
+    <input type="file" id="imageUpload" accept="image/*">
 
-<img id="preview" width="200" style="display:block;margin:auto;" />
+    <!-- Image Preview -->
+    <img id="preview" />
 
-<h2 id="prediction">Result</h2>
+    <!-- Webcam Buttons -->
+    <div class="buttons">
+        <button onclick="startWebcam()">Start Webcam</button>
+        <button onclick="stopWebcam()">Stop Webcam</button>
+    </div>
 
+    <!-- Webcam Output -->
+    <div id="webcam-container"></div>
+
+    <!-- Text Result -->
+    <div id="result"></div>
+
+    <!-- Bar Graph -->
+    <div id="chart"></div>
 </div>
 
 <script src="script.js"></script>
