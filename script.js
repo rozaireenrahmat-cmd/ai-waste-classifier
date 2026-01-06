@@ -4,13 +4,24 @@ const metadataURL = "model/metadata.json";
 let model;
 let webcam;
 let webcamRunning = false;
+let modelLoaded = false;
 
 /* =====================
-   LOAD MODEL
+   LOAD MODEL (DEBUG READY)
 ===================== */
 async function loadModel() {
-    model = await tmImage.load(modelURL, metadataURL);
-    document.getElementById("result").innerHTML = "Model loaded successfully.";
+    try {
+        console.log("Loading model...");
+        model = await tmImage.load(modelURL, metadataURL);
+        modelLoaded = true;
+        document.getElementById("result").innerHTML =
+            "✅ Model loaded. Ready.";
+        console.log("Model loaded successfully");
+    } catch (error) {
+        document.getElementById("result").innerHTML =
+            "❌ Failed to load model. Check console.";
+        console.error("MODEL LOAD ERROR:", error);
+    }
 }
 loadModel();
 
@@ -18,11 +29,18 @@ loadModel();
    IMAGE UPLOAD
 ===================== */
 document.getElementById("imageUpload").addEventListener("change", async (e) => {
+    if (!modelLoaded) {
+        alert("Model not loaded yet!");
+        return;
+    }
+
     const img = document.getElementById("preview");
     img.src = URL.createObjectURL(e.target.files[0]);
 
     img.onload = async () => {
+        console.log("Image loaded");
         const prediction = await model.predict(img);
+        console.log(prediction);
         showResult(prediction);
     };
 });
@@ -31,15 +49,25 @@ document.getElementById("imageUpload").addEventListener("change", async (e) => {
    WEBCAM
 ===================== */
 async function startWebcam() {
+    if (!modelLoaded) {
+        alert("Model not loaded yet!");
+        return;
+    }
+
     if (webcamRunning) return;
 
-    webcam = new tmImage.Webcam(300, 300, true);
-    await webcam.setup();
-    await webcam.play();
+    try {
+        webcam = new tmImage.Webcam(300, 300, true);
+        await webcam.setup();
+        await webcam.play();
 
-    document.getElementById("webcam-container").appendChild(webcam.canvas);
-    webcamRunning = true;
-    webcamLoop();
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        webcamRunning = true;
+        webcamLoop();
+    } catch (err) {
+        alert("Camera permission denied");
+        console.error(err);
+    }
 }
 
 async function webcamLoop() {
@@ -61,18 +89,18 @@ function stopWebcam() {
 }
 
 /* =====================
-   DISPLAY RESULT + BAR
+   RESULT + BAR GRAPH
 ===================== */
 function showResult(predictions) {
-    let textOutput = "<strong>Prediction Result</strong><br>";
-    let chartHTML = "<div class='bar-container'>";
+    let text = "Prediction Result<br>";
+    let chart = "<div class='bar-container'>";
 
     predictions.forEach(p => {
         const percent = (p.probability * 100).toFixed(1);
 
-        textOutput += `${p.className}: ${percent}%<br>`;
+        text += `${p.className}: ${percent}%<br>`;
 
-        chartHTML += `
+        chart += `
             <div class="bar">
                 <div class="bar-label">${p.className}</div>
                 <div class="bar-fill" style="width:${percent}%">
@@ -82,8 +110,8 @@ function showResult(predictions) {
         `;
     });
 
-    chartHTML += "</div>";
+    chart += "</div>";
 
-    document.getElementById("result").innerHTML = textOutput;
-    document.getElementById("chart").innerHTML = chartHTML;
+    document.getElementById("result").innerHTML = text;
+    document.getElementById("chart").innerHTML = chart;
 }
