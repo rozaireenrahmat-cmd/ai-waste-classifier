@@ -1,39 +1,89 @@
+const modelURL = "model/model.json";
+const metadataURL = "model/metadata.json";
+
 let model;
-let modelLoaded = false;
+let webcam;
+let webcamRunning = false;
 
-const MODEL_URL = "model/";
-
+/* =====================
+   LOAD MODEL
+===================== */
 async function loadModel() {
-    try {
-        model = await tmImage.load(
-            MODEL_URL + "model.json",
-            MODEL_URL + "metadata.json"
-        );
-        modelLoaded = true;
-        console.log("✅ Model loaded");
-    } catch (error) {
-        console.error("❌ Model failed to load", error);
-    }
+    model = await tmImage.load(modelURL, metadataURL);
+    document.getElementById("result").innerHTML = "Model loaded successfully.";
 }
-
 loadModel();
 
-async function predictImage(event) {
-
-    if (!modelLoaded) {
-        alert("Model still loading. Please wait a few seconds.");
-        return;
-    }
-
+/* =====================
+   IMAGE UPLOAD
+===================== */
+document.getElementById("imageUpload").addEventListener("change", async (e) => {
     const img = document.getElementById("preview");
-    img.src = URL.createObjectURL(event.target.files[0]);
+    img.src = URL.createObjectURL(e.target.files[0]);
 
     img.onload = async () => {
         const prediction = await model.predict(img);
-        prediction.sort((a, b) => b.probability - a.probability);
-
-        document.getElementById("prediction").innerText =
-            `${prediction[0].className} (${(prediction[0].probability * 100).toFixed(2)}%)`;
+        showResult(prediction);
     };
+});
+
+/* =====================
+   WEBCAM
+===================== */
+async function startWebcam() {
+    if (webcamRunning) return;
+
+    webcam = new tmImage.Webcam(300, 300, true);
+    await webcam.setup();
+    await webcam.play();
+
+    document.getElementById("webcam-container").appendChild(webcam.canvas);
+    webcamRunning = true;
+    webcamLoop();
 }
 
+async function webcamLoop() {
+    if (!webcamRunning) return;
+
+    webcam.update();
+    const prediction = await model.predict(webcam.canvas);
+    showResult(prediction);
+
+    requestAnimationFrame(webcamLoop);
+}
+
+function stopWebcam() {
+    if (!webcamRunning) return;
+
+    webcam.stop();
+    webcamRunning = false;
+    document.getElementById("webcam-container").innerHTML = "";
+}
+
+/* =====================
+   DISPLAY RESULT + BAR
+===================== */
+function showResult(predictions) {
+    let textOutput = "<strong>Prediction Result</strong><br>";
+    let chartHTML = "<div class='bar-container'>";
+
+    predictions.forEach(p => {
+        const percent = (p.probability * 100).toFixed(1);
+
+        textOutput += `${p.className}: ${percent}%<br>`;
+
+        chartHTML += `
+            <div class="bar">
+                <div class="bar-label">${p.className}</div>
+                <div class="bar-fill" style="width:${percent}%">
+                    ${percent}%
+                </div>
+            </div>
+        `;
+    });
+
+    chartHTML += "</div>";
+
+    document.getElementById("result").innerHTML = textOutput;
+    document.getElementById("chart").innerHTML = chartHTML;
+}
