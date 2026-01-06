@@ -1,51 +1,42 @@
 body {
     margin: 0;
-    background: #020617;
-    color: #e5e7eb;
+    background: #f1f5f9;
     font-family: Arial, Helvetica, sans-serif;
-    text-align: center;
 }
 
 .container {
-    max-width: 720px;
-    margin: auto;
-    padding: 20px;
+    max-width: 700px;
+    margin: 80px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
 h1 {
-    color: #38bdf8;
+    margin-top: 0;
 }
 
 input, button {
-    padding: 10px;
-    margin: 10px;
-    border-radius: 6px;
-    border: none;
+    padding: 10px 14px;
+    margin: 8px;
     font-size: 14px;
 }
 
 button {
-    background: #0284c7;
-    color: white;
     cursor: pointer;
 }
 
-button:hover {
-    background: #0369a1;
-}
-
 img, canvas {
-    margin-top: 15px;
     max-width: 300px;
+    margin-top: 15px;
     border-radius: 10px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 #result {
     margin-top: 20px;
-    font-size: 15px;
+    font-weight: bold;
 }
 
 /* ===== BAR GRAPH ===== */
@@ -56,10 +47,10 @@ img, canvas {
 }
 
 .bar {
-    background: #1e293b;
+    background: #e5e7eb;
     border-radius: 6px;
     margin: 10px 0;
-    padding: 6px;
+    padding: 5px;
 }
 
 .bar-label {
@@ -68,14 +59,13 @@ img, canvas {
 }
 
 .bar-fill {
-    height: 22px;
-    background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+    height: 20px;
+    background: #3b82f6;
     width: 0%;
     border-radius: 4px;
-    color: #020617;
+    color: white;
     font-size: 12px;
+    line-height: 20px;
     text-align: right;
     padding-right: 6px;
-    line-height: 22px;
-    transition: width 0.3s ease;
 }
