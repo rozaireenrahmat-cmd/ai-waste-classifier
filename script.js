@@ -7,7 +7,20 @@ let webcamRunning = false;
 let modelLoaded = false;
 
 /* =====================
-   LOAD MODEL (DEBUG READY)
+   WAIT FOR tmImage
+===================== */
+window.addEventListener("load", () => {
+    if (typeof tmImage === "undefined") {
+        document.getElementById("result").innerHTML =
+            "❌ tmImage library not loaded.";
+        console.error("tmImage is undefined");
+        return;
+    }
+    loadModel();
+});
+
+/* =====================
+   LOAD MODEL
 ===================== */
 async function loadModel() {
     try {
@@ -23,7 +36,6 @@ async function loadModel() {
         console.error("MODEL LOAD ERROR:", error);
     }
 }
-loadModel();
 
 /* =====================
    IMAGE UPLOAD
@@ -38,9 +50,7 @@ document.getElementById("imageUpload").addEventListener("change", async (e) => {
     img.src = URL.createObjectURL(e.target.files[0]);
 
     img.onload = async () => {
-        console.log("Image loaded");
         const prediction = await model.predict(img);
-        console.log(prediction);
         showResult(prediction);
     };
 });
@@ -56,18 +66,13 @@ async function startWebcam() {
 
     if (webcamRunning) return;
 
-    try {
-        webcam = new tmImage.Webcam(300, 300, true);
-        await webcam.setup();
-        await webcam.play();
+    webcam = new tmImage.Webcam(300, 300, true);
+    await webcam.setup();
+    await webcam.play();
 
-        document.getElementById("webcam-container").appendChild(webcam.canvas);
-        webcamRunning = true;
-        webcamLoop();
-    } catch (err) {
-        alert("Camera permission denied");
-        console.error(err);
-    }
+    document.getElementById("webcam-container").appendChild(webcam.canvas);
+    webcamRunning = true;
+    webcamLoop();
 }
 
 async function webcamLoop() {
@@ -76,7 +81,6 @@ async function webcamLoop() {
     webcam.update();
     const prediction = await model.predict(webcam.canvas);
     showResult(prediction);
-
     requestAnimationFrame(webcamLoop);
 }
 
@@ -92,7 +96,7 @@ function stopWebcam() {
    RESULT + BAR GRAPH
 ===================== */
 function showResult(predictions) {
-    let text = "Prediction Result<br>";
+    let text = "<strong>Prediction Result</strong><br>";
     let chart = "<div class='bar-container'>";
 
     predictions.forEach(p => {
