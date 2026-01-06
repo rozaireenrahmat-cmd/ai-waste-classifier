@@ -19,25 +19,18 @@
     <h1>AI Waste Classifier</h1>
     <p>Upload an image or use webcam to classify waste</p>
 
-    <!-- Upload Image -->
     <input type="file" id="imageUpload" accept="image/*">
 
-    <!-- Image Preview -->
-    <img id="preview" />
+    <img id="preview" alt="preview">
 
-    <!-- Webcam Buttons -->
     <div class="buttons">
         <button onclick="startWebcam()">Start Webcam</button>
         <button onclick="stopWebcam()">Stop Webcam</button>
     </div>
 
-    <!-- Webcam Output -->
     <div id="webcam-container"></div>
 
-    <!-- Text Result -->
-    <div id="result"></div>
-
-    <!-- Bar Graph -->
+    <div id="result">Loading model...</div>
     <div id="chart"></div>
 </div>
 
