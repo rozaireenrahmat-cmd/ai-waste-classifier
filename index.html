@@ -5,11 +5,11 @@
 <title>AI Waste Classifier</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- TensorFlow.js -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+<!-- TensorFlow.js (STABLE VERSION) -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.16.0/dist/tf.min.js"></script>
 
-<!-- Teachable Machine Image (WAJIB ADA DAN ATAS) -->
-<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest"></script>
+<!-- Teachable Machine Image (STABLE VERSION) -->
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -20,7 +20,6 @@
     <p>Upload an image or use webcam to classify waste</p>
 
     <input type="file" id="imageUpload" accept="image/*">
-
     <img id="preview" alt="preview">
 
     <div class="buttons">
@@ -29,7 +28,6 @@
     </div>
 
     <div id="webcam-container"></div>
-
     <div id="result">Loading model...</div>
     <div id="chart"></div>
 </div>
