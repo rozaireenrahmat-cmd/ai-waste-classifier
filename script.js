@@ -7,19 +7,6 @@ let webcamRunning = false;
 let modelLoaded = false;
 
 /* =====================
-   WAIT FOR tmImage
-===================== */
-window.addEventListener("load", () => {
-    if (typeof tmImage === "undefined") {
-        document.getElementById("result").innerHTML =
-            "❌ tmImage library not loaded.";
-        console.error("tmImage is undefined");
-        return;
-    }
-    loadModel();
-});
-
-/* =====================
    LOAD MODEL
 ===================== */
 async function loadModel() {
@@ -36,6 +23,8 @@ async function loadModel() {
         console.error("MODEL LOAD ERROR:", error);
     }
 }
+
+window.onload = loadModel;
 
 /* =====================
    IMAGE UPLOAD
