@@ -1,13 +1,81 @@
 body {
-    font-family: Arial, sans-serif;
-    background: #eef2f3;
+    margin: 0;
+    background: #020617;
+    color: #e5e7eb;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
 }
 
 .container {
-    width: 400px;
-    margin: 100px auto;
-    background: white;
+    max-width: 720px;
+    margin: auto;
     padding: 20px;
-    text-align: center;
+}
+
+h1 {
+    color: #38bdf8;
+}
+
+input, button {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+}
+
+button {
+    background: #0284c7;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0369a1;
+}
+
+img, canvas {
+    margin-top: 15px;
+    max-width: 300px;
     border-radius: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 15px;
+}
+
+/* ===== BAR GRAPH ===== */
+
+.bar-container {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.bar {
+    background: #1e293b;
+    border-radius: 6px;
+    margin: 10px 0;
+    padding: 6px;
+}
+
+.bar-label {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.bar-fill {
+    height: 22px;
+    background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+    width: 0%;
+    border-radius: 4px;
+    color: #020617;
+    font-size: 12px;
+    text-align: right;
+    padding-right: 6px;
+    line-height: 22px;
+    transition: width 0.3s ease;
 }
